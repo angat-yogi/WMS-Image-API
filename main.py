@@ -10,6 +10,10 @@ import os
 
 app = Flask(__name__)
 
+@app.route("/")
+def index():
+    return "Hello User! Now you have successfully called the WMS Image API"
+
 @app.route("/get-finalimage/<path:image_url>")
 def process_image(image_url):
     try:
