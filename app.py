@@ -18,7 +18,7 @@ def index():
     return "Hello User! Now you have successfully called the WMS Image API"
 
 @app.route("/get-finalimage", methods=["POST", "GET"])
-def process_image():
+async def process_image():
     try:
         if request.method == 'POST':
             if 'file' not in request.files:
@@ -31,7 +31,7 @@ def process_image():
             input_image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
             
             # Perform image processing asynchronously and await the result
-            output_image = asyncio.run(process_image_async(input_image))
+            output_image = await process_image_async(input_image)
             
             # Convert the NumPy array to bytes
             success, encoded_image = cv2.imencode('.png', output_image)
