@@ -18,6 +18,9 @@ def index():
 @app.route("/get-finalimage", methods=["POST", "GET"])
 def process_image():
     try:
+        print("request",request)
+        print("request header",request.headers)
+
         if request.method == 'POST':
             if 'file' not in request.files:
                 print("No file provided in the request", request.files)
