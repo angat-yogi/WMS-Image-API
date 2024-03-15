@@ -1,5 +1,3 @@
-
-import asyncio
 import os
 from flask import Flask, request, send_file, jsonify
 from rembg import remove
@@ -18,7 +16,7 @@ def index():
     return "Hello User! Now you have successfully called the WMS Image API"
 
 @app.route("/get-finalimage", methods=["POST", "GET"])
-async def process_image():
+def process_image():
     try:
         if request.method == 'POST':
             if 'file' not in request.files:
@@ -30,8 +28,7 @@ async def process_image():
             image_array = np.frombuffer(image_data, np.uint8)
             input_image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
             
-            # Perform image processing asynchronously and await the result
-            output_image = await process_image_async(input_image)
+            output_image = process_image_sync(input_image)
             
             # Convert the NumPy array to bytes
             success, encoded_image = cv2.imencode('.png', output_image)
@@ -50,7 +47,7 @@ async def process_image():
         print(error_message)
         return jsonify({"error": error_message}), 500
 
-async def process_image_async(input_image):
+def process_image_sync(input_image):
     return remove(input_image)
 
 if __name__ == "__main__":
